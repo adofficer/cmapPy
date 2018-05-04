@@ -69,8 +69,9 @@ def build_parser():
 
     parser.add_argument("--out_type", "-ot", default="gctx", choices=["gct", "gctx"],
                         help="whether to save output as a gct or gctx")
-    parser.add_argument("--out_name", "-o", type=str, default="concated.gctx",
-        help="what to name the output file")
+    parser.add_argument("--out_name", "-o", type=str, default="concated",
+        help="what to name the output file " +
+             "(appropriate gct(x) suffix added automatically)")
     parser.add_argument("--fields_to_remove", "-ftr", nargs="+", default=[],
         help="fields to remove from the common metadata")
     parser.add_argument("--remove_all_metadata_fields", "-ramf", action="store_true", default=False,
@@ -140,10 +141,11 @@ def concat_main(args):
 
         elif args.concat_direction == "vert":
             out_gctoo = vstack(gctoos, args.remove_all_metadata_fields, args.error_report_output_file,
-                               args.fields_to_remove, args.reset_ids)
-
+                               args.fields_to_remove, args.reset_ids)    
+    
     # Write out_gctoo to file
     logger.info("Writing to output file args.out_name:  {}".format(args.out_name))
+    logger.info("Writing to output file of type:  {}".format(args.out_type))
 
     if args.out_type == "gctx":
         write_gctx.write(out_gctoo, args.out_name)
